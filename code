@@ -1,0 +1,71 @@
+import os
+
+class Library:                                                #creating class name library to arrange all user define function inside it
+    def __init__(self, file_name):                            #Initializing new objects name self name
+        self.file_name = file_name                            #giving self name to file name
+        if not os.path.exists(self.file_name):                #if giving condition do not satisy
+            with open(self.file_name, 'w') as f:              #given data is printed inside it
+                f.write('')                                   #initializing write to the file
+
+    def add_book(self, title, author):                        #creating a function name add book
+        with open(self.file_name, 'a') as f:                  #add given information inside file name
+            f.write(f"{title},{author}\n")                    #execute writing inside the file
+        print("Book added successfully.")                     #conform the book is added succesfully
+
+    def display_books(self):                                  #creating another user function name display
+        print("Books available in the library:")              #show the book avaiable in the libraray
+        with open(self.file_name, 'r') as f:                  #open file in the read mode to see the content of the file
+            for line in f:                                    #initilizing for loop to print all the entered data
+                title, author = line.strip().split(',')       #spliting the containt in Title and Author
+                print(f"Title: {title}, Author: {author}")    #print the data
+
+    def search_book(self, title):                             #creating user function search
+        with open(self.file_name, 'r') as f:                  #open the file in read mode
+            for line in f:                                    #initilizing for loop to print all the entered data
+                book_title, author = line.strip().split(',')  #split the content in Title and author
+                if book_title == title:                       #if give book is found
+                    print(f"Book found - Title: {book_title}, Author: {author}")#print book found title and author
+                    return                                                      #Return book not found
+        print("Book not found.")
+
+    def remove_book(self, title):                            #create a function name remove book
+        with open(self.file_name, 'r') as f:                 #open file in the read mode to see the content of the file
+            lines = f.readlines()                            #printing the lines
+        with open(self.file_name, 'w') as f:                 # opening the file in write mode
+            for line in lines:                               #starting loop in lines
+                if not line.startswith(title):               #if giving lines do not start with title
+                    f.write(line)                            #rewriting or removing the title
+        print("Book removed successfully.")                  #print book remove
+
+def main():                                                  #creating main function
+    library = Library("library.txt")                         #initilazing variable name library inside main
+    while True:                                              #starting while loop  
+        print("\nWelcome to the Library Management System")  #giving option
+        print("1. Add a Book")                               #giving option  
+        print("2. Display all Books")                        #giving option
+        print("3. Search for a Book")                        #giving option 
+        print("4. Remove a Book")                            #giving option 
+        print("5. Exit")                                     #giving option
+
+        choice = input("Enter your choice: ")                #giving choice
+
+        if choice == '1':                                    #using if condition
+            title = input("Enter the title of the book: ")   #executing add function
+            author = input("Enter the author of the book: ") #executing add function
+            library.add_book(title, author)
+        elif choice == '2':                                  #other option for choice
+            library.display_books()                          #display function
+        elif choice == '3':                                 #other option for choice
+            title = input("Enter the title of the book you want to search for: ")
+            library.search_book(title)                     #search function
+        elif choice == '4':                                #other option for choice
+            title = input("Enter the title of the book you want to remove: ")
+            library.remove_book(title)                     #remove function
+        elif choice == '5':                                #other option for choice
+            print("Exiting...")                            # exiting
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":                                #initilazing name inside main function
+    main()                                                #Declare main
